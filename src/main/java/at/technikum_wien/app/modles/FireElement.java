@@ -1,0 +1,14 @@
+package at.technikum_wien.app.modles;
+
+public class FireElement extends Element {
+    @Override
+    public double getEffectivnessAgainst(SpellCard opponendCard) {
+        if(opponendCard.getElement().equals("Normal")){
+            return 2;
+        } else if (opponendCard.getElement().equals("Water")) {
+            return 0.5;
+        }else{
+            return 1;
+        }
+    }
+}
