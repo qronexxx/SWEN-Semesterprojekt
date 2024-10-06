@@ -7,7 +7,13 @@ import lombok.Setter;
 @Setter
 
 public class Card {
-    private String name;
-    private int damage;
-    private String element;
+    protected String name;
+    protected int damage;
+    protected Element element;
+
+    public Card(String name, int damage, Element element){
+        this.name = name;
+        this.damage = damage;
+        this.element = element;
+    }
 }

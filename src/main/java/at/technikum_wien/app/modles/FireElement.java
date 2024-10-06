@@ -1,6 +1,11 @@
 package at.technikum_wien.app.modles;
 
+import lombok.Getter;
+
 public class FireElement extends Element {
+    public String getElementType() {
+        return "Fire";
+    }
     @Override
     public double getEffectivnessAgainst(SpellCard opponendCard) {
         if(opponendCard.getElement().equals("Normal")){

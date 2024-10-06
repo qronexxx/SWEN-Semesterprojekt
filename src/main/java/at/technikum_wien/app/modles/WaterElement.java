@@ -1,6 +1,11 @@
 package at.technikum_wien.app.modles;
 
+import lombok.Getter;
+
 public class WaterElement extends Element {
+    public String getElementType() {
+        return "Water";
+    }
     @Override
     public double getEffectivnessAgainst(SpellCard opponendCard) {
         if(opponendCard.getElement().equals("Fire")){
