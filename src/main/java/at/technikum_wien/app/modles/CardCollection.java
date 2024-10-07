@@ -17,14 +17,21 @@ public class CardCollection {
     }
 
     public void addCard(Card card){
-        if(cards.size() < maxSize){
             cards.add(card);
-        }else{
-            System.out.println("Die maximale Anzahl ist bereits erreicht");
-        }
     }
 
     public void deleteCard(int index){
         cards.remove(index);
+    }
+
+    public boolean isEmpty(){
+        return cards.isEmpty();
+    }
+
+    public Card getCardByIndex(int index) {
+        return cards.get(index);
+    }
+    public int size() {
+        return cards.size();
     }
 }

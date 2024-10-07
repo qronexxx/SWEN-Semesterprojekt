@@ -2,6 +2,8 @@ package at.technikum_wien.app.modles;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 
@@ -20,6 +22,10 @@ public class User {
         this.elo = elo;
         this.deck = new CardCollection(4);
         this.stack = new CardCollection();
+    }
+
+    public CardCollection getDeck() {
+        return deck;
     }
 
     public void register(){}

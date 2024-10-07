@@ -1,13 +1,11 @@
 package at.technikum_wien.app.modles;
 
-import lombok.Getter;
-
 public class NormalElement extends Element {
     public String getElementType() {
         return "Normal";
     }
     @Override
-    public double getEffectivnessAgainst(SpellCard opponendCard) {
+    public double getEffectivnessAgainst(Card opponendCard) {
         if(opponendCard.getElement().equals("Water")){
             return 2;
         } else if (opponendCard.getElement().equals("Fire")) {
