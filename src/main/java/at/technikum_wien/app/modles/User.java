@@ -24,10 +24,6 @@ public class User {
         this.stack = new CardCollection();
     }
 
-    public CardCollection getDeck() {
-        return deck;
-    }
-
     public void register(){}
     public void login(){}
 

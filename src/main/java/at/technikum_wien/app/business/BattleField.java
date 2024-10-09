@@ -1,8 +1,14 @@
-package at.technikum_wien.app.modles;
+package at.technikum_wien.app.business;
+
+import at.technikum_wien.app.modles.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+
+
+//Controller - Controller Interface abstrakte mothoden von get...
 
 public class BattleField {
     private User player1;

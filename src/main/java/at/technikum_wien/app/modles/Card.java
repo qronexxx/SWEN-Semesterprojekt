@@ -17,3 +17,4 @@ public class Card {
         this.element = element;
     }
 }
+
