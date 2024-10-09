@@ -1,4 +1,6 @@
-package at.technikum_wien.app.modles;
+package at.technikum_wien.app.business;
+
+import at.technikum_wien.app.modles.Card;
 
 public class FireElement extends Element {
     public String getElementType() {

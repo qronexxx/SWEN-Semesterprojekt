@@ -1,5 +1,6 @@
 package at.technikum_wien.app.modles;
 
+import at.technikum_wien.app.business.Element;
 import lombok.Getter;
 import lombok.Setter;
 

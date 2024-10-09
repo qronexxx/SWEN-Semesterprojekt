@@ -1,5 +1,8 @@
 package at.technikum_wien;
 import at.technikum_wien.app.business.BattleField;
+import at.technikum_wien.app.business.FireElement;
+import at.technikum_wien.app.business.NormalElement;
+import at.technikum_wien.app.business.WaterElement;
 import at.technikum_wien.app.modles.*;
 
 public class Main {

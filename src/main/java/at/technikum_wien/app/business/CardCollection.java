@@ -1,4 +1,6 @@
-package at.technikum_wien.app.modles;
+package at.technikum_wien.app.business;
+
+import at.technikum_wien.app.modles.Card;
 
 import java.util.ArrayList;
 import java.util.List;

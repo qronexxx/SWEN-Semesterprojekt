@@ -1,8 +1,7 @@
 package at.technikum_wien.app.modles;
+import at.technikum_wien.app.business.CardCollection;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -23,9 +22,4 @@ public class User {
         this.deck = new CardCollection(4);
         this.stack = new CardCollection();
     }
-
-    public void register(){}
-    public void login(){}
-
-
 }
