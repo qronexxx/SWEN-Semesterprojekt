@@ -1,18 +1,18 @@
 package at.technikum_wien.app.business;
 
 import at.technikum_wien.app.modles.*;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-
 
 //Controller - Controller Interface abstrakte mothoden von get...
 
 public class BattleField {
     private User player1;
     private User player2;
+    @Getter
     private List<String> battleLog;
     private static final int MAX_ROUNDS = 100;
 
@@ -90,7 +90,7 @@ public class BattleField {
         if (card1 instanceof MonsterCard && card2 instanceof MonsterCard) {
             return card1.getDamage();
         } else if (card1 instanceof SpellCard) {
-            return card1.getDamage() * card1.getElement().getEffectivnessAgainst(card2);
+            return card1.getDamage() * card1.getElement().getEffectivenessAgainst(card2);
         } else {
             return card1.getDamage();
         }
@@ -98,7 +98,7 @@ public class BattleField {
 
     private boolean isSpecialRule(Card card1, Card card2) {
         return (card1.getName().equals("Goblin") && card2.getName().equals("Dragon")) ||
-                (card1.getName().equals("Ork") && card2.getName().equals("Wizzard")) ||
+                (card1.getName().equals("Ork") && card2.getName().equals("Wizard")) ||
                 (card1.getName().equals("Knight") && card2 instanceof SpellCard && card2.getElement() instanceof WaterElement) ||
                 (card1 instanceof SpellCard && card2.getName().equals("Kraken")) ||
                 (card1.getName().equals("Dragon") && card2.getName().equals("FireElf"));
@@ -114,7 +114,4 @@ public class BattleField {
         loser.setElo(loser.getElo() - 5);
     }
 
-    public List<String> getBattleLog() {
-        return battleLog;
-    }
 }

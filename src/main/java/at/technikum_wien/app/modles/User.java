@@ -15,10 +15,10 @@ public class User {
     private CardCollection deck;
 
     public User(String username, String password, int coins, int elo){
-        this.username = username;
-        this.password = password;
-        this.coins = coins;
-        this.elo = elo;
+        setUsername(username);
+        setPassword(password);
+        setCoins(coins);
+        setElo(elo);
         this.deck = new CardCollection(4);
         this.stack = new CardCollection();
     }

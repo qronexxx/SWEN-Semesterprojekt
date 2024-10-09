@@ -13,9 +13,9 @@ public class Card {
     protected Element element;
 
     public Card(String name, int damage, Element element){
-        this.name = name;
-        this.damage = damage;
-        this.element = element;
+        setName(name);
+        setDamage(damage);
+        setElement(element);
     }
 }
 

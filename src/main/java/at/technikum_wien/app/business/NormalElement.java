@@ -7,7 +7,7 @@ public class NormalElement extends Element {
         return "Normal";
     }
     @Override
-    public double getEffectivnessAgainst(Card opponendCard) {
+    public double getEffectivenessAgainst(Card opponendCard) {
         if(opponendCard.getElement().equals("Water")){
             return 2;
         } else if (opponendCard.getElement().equals("Fire")) {

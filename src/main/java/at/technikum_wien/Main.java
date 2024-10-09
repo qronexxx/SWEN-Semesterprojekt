@@ -14,7 +14,7 @@ public class Main {
         //All different monster cards: Goblins Dragons Wizzard Orks Knights Kraken FireElves
         player1.getDeck().addCard(new MonsterCard("Dragon", 50, new FireElement()));
         player1.getDeck().addCard(new SpellCard("Fireball", 30, new FireElement()));
-        player1.getDeck().addCard(new MonsterCard("Wizzard", 40, new FireElement()));
+        player1.getDeck().addCard(new MonsterCard("Wizard", 40, new FireElement()));
         player1.getDeck().addCard(new MonsterCard("Ork", 40, new NormalElement()));
 
 

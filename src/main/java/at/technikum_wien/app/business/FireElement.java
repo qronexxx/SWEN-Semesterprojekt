@@ -7,7 +7,7 @@ public class FireElement extends Element {
         return "Fire";
     }
     @Override
-    public double getEffectivnessAgainst(Card opponendCard) {
+    public double getEffectivenessAgainst(Card opponendCard) {
         if(opponendCard.getElement().equals("Normal")){
             return 2;
         } else if (opponendCard.getElement().equals("Water")) {
