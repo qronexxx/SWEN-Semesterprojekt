@@ -1,7 +1,7 @@
-package at.fhtw.httpserver.server;
+package at.technikum_wien.httpserver.server;
 
-import at.fhtw.httpserver.utils.RequestHandler;
-import at.fhtw.httpserver.utils.Router;
+import at.technikum_wien.httpserver.utils.RequestHandler;
+import at.technikum_wien.httpserver.utils.Router;
 
 import java.io.IOException;
 import java.net.ServerSocket;

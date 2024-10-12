@@ -1,4 +1,4 @@
-package at.fhtw.httpserver.server;
+package at.technikum_wien.httpserver.server;
 
 import at.fhtw.httpserver.http.ContentType;
 import at.fhtw.httpserver.http.HttpStatus;

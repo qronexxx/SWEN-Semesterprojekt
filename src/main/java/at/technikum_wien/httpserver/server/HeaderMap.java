@@ -1,4 +1,4 @@
-package at.fhtw.httpserver.server;
+package at.technikum_wien.httpserver.server;
 
 import java.util.HashMap;
 import java.util.Map;

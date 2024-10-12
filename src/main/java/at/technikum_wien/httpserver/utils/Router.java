@@ -1,4 +1,4 @@
-package at.fhtw.httpserver.utils;
+package at.technikum_wien.httpserver.utils;
 
 import at.fhtw.httpserver.server.Service;
 

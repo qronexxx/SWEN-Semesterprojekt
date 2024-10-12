@@ -1,6 +1,6 @@
-package at.fhtw.httpserver.server;
+package at.technikum_wien.httpserver.server;
 
-import at.fhtw.httpserver.http.Method;
+import at.technikum_wien.httpserver.http.*;
 
 import java.util.ArrayList;
 import java.util.List;

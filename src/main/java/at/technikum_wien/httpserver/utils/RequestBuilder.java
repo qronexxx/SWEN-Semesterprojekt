@@ -1,7 +1,7 @@
-package at.fhtw.httpserver.utils;
+package at.technikum_wien.httpserver.utils;
 
-import at.fhtw.httpserver.http.Method;
-import at.fhtw.httpserver.server.Request;
+import at.technikum_wien.httpserver.http.Method;
+import at.technikum_wien.httpserver.server.Request;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package at.fhtw.httpserver.http;
+package at.technikum_wien.httpserver.http;
 
 public enum ContentType {
     PLAIN_TEXT("text/plain"),
