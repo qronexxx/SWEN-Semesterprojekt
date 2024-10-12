@@ -1,6 +1,6 @@
 package at.technikum_wien.httpserver.utils;
 
-import at.fhtw.httpserver.server.Service;
+import at.technikum_wien.httpserver.server.Service;
 
 import java.util.HashMap;
 import java.util.Map;

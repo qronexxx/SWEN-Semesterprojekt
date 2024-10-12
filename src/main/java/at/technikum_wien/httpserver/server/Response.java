@@ -1,7 +1,7 @@
 package at.technikum_wien.httpserver.server;
 
-import at.fhtw.httpserver.http.ContentType;
-import at.fhtw.httpserver.http.HttpStatus;
+import at.technikum_wien.httpserver.http.ContentType;
+import at.technikum_wien.httpserver.http.HttpStatus;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

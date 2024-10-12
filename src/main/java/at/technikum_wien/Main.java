@@ -1,8 +1,9 @@
 package at.technikum_wien;
 import at.technikum_wien.app.business.*;
 import at.technikum_wien.app.modles.*;
-import at.technikum_wien.httpserver.*;
 import at.technikum_wien.httpserver.server.Server;
+import at.technikum_wien.httpserver.services.UserService;
+import at.technikum_wien.httpserver.utils.Router;
 
 import java.io.IOException;
 
@@ -21,18 +22,22 @@ public class Main {
     private static Router configureRouter()
     {
         Router router = new Router();
+        router.addService("/user", new UserService());
         //router.addService("/weather", new WeatherService());
         //router.addService("/echo", new EchoService());
 
         return router;
     }
-    }
 
 
 
-    void testMain(){
-        User player1 = new User("Player1", "1000",  50,  100);
-        User player2 = new User("Player2", "1000",  50,  100);
+
+
+
+
+    void test(){
+        User player1 = new User(1,"Player1", "1000",  50,  100);
+        User player2 = new User(2,"Player2", "1000",  50,  100);
 
         // Add some cards to player1's deck
         //All different monster cards: Goblins Dragons Wizzard Orks Knights Kraken FireElves

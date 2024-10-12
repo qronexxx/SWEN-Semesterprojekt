@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 
 public class User {
+    private int userID;
     private String username;
     private String password;
     private int coins;
@@ -14,7 +15,8 @@ public class User {
     private CardCollection stack;
     private CardCollection deck;
 
-    public User(String username, String password, int coins, int elo){
+    public User(int userID, String username, String password, int coins, int elo){
+        setUserID(userID);
         setUsername(username);
         setPassword(password);
         setCoins(coins);
