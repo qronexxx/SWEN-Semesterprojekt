@@ -7,29 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDummyDAL {
-    private List<User> userData;
+    // Mache die userData-Liste static, damit sie für alle Instanzen zugänglich ist
+    @Getter
+    private static List<User> userData = new ArrayList<>();
 
-    public UserDummyDAL(){
-        userData = new ArrayList<>();
-        userData.add(new User(1, "Elias", "123", 100, 100));
-        userData.add(new User(2, "Joel", "123", 50, 110));
-        userData.add(new User(3, "Darko", "123", 75, 85));
-        userData.add(new User(4, "Roy", "123", 25, 70));
+    public UserDummyDAL() {
+        // Initialisiere die Liste nur einmal, falls sie leer ist
+        if (userData.isEmpty()) {
+            userData.add(new User("Elias", "123"));
+            userData.add(new User("Joel", "123"));
+            userData.add(new User("Darko", "123"));
+            userData.add(new User("Roy", "123"));
+            //userData.add(new User("admin", "admin", true));
+        }
     }
 
-    public User getUser(Integer ID){
-        User foundUser = userData.stream()
-                .filter(user -> ID == user.getUserID())
+    public User getUser(String username) {
+        return userData.stream()
+                .filter(user -> user.getUsername().equals(username))
                 .findAny()
                 .orElse(null);
-        return foundUser;
     }
 
-    public List<User> getUserData() {
-        return userData;
-    }
-
-    public void addUser(User user){
+    public void addUser(User user) {
         userData.add(user);
     }
 }

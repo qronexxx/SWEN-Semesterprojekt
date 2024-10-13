@@ -7,20 +7,38 @@ import lombok.Setter;
 @Setter
 
 public class User {
-    private int userID;
     private String username;
     private String password;
     private int coins;
     private int elo;
     private CardCollection stack;
     private CardCollection deck;
+    private boolean isAdmin;
 
-    public User(int userID, String username, String password, int coins, int elo){
-        setUserID(userID);
+    public User(){
+            this.deck = new CardCollection(4);
+            this.stack = new CardCollection();
+            setElo(100);
+            setCoins(50);
+            setAdmin(false);
+    }
+
+    public User(String username, String password){
         setUsername(username);
         setPassword(password);
-        setCoins(coins);
-        setElo(elo);
+        setCoins(50);
+        setElo(100);
+        this.deck = new CardCollection(4);
+        this.stack = new CardCollection();
+        setAdmin(false);
+    }
+
+    public User(String username, String password, boolean isAdmin){
+        setUsername(username);
+        setPassword(password);
+        setCoins(50);
+        setElo(100);
+        setAdmin(isAdmin);
         this.deck = new CardCollection(4);
         this.stack = new CardCollection();
     }
