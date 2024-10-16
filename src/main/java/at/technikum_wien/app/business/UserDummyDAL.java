@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDummyDAL {
-    // Mache die userData-Liste static, damit sie für alle Instanzen zugänglich ist
+    // userData static
     @Getter
     private static List<User> userData = new ArrayList<>();
 
