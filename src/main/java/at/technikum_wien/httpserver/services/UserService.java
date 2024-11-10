@@ -21,8 +21,7 @@ public class UserService implements Service {
                 request.getPathParts().size() > 1) {
             return this.userController.getUser(request.getPathParts().get(1));
         } else if (request.getMethod() == Method.GET) {
-            return this.userController.getUser();
-            //return this.weatherController.getWeatherPerRepository();
+            return this.userController.getUsersPerRepository();
         } else if (request.getMethod() == Method.POST) {
             return this.userController.addUser(request);
         }else if (request.getMethod() == Method.PUT) {

@@ -34,9 +34,6 @@ public class Main {
         router.addService("/tradings", new TradingsService());
 
 
-        //router.addService("/weather", new WeatherService());
-        //router.addService("/echo", new EchoService());
-
         return router;
     }
 

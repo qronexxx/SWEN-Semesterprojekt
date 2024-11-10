@@ -1,6 +1,8 @@
 package at.technikum_wien.app.controllers;
 
 import at.technikum_wien.app.business.UserDummyDAL;
+import at.technikum_wien.app.dal.UnitOfWork;
+import at.technikum_wien.app.dal.repositroy.UserRepository;
 import at.technikum_wien.app.modles.User;
 import at.technikum_wien.httpserver.http.ContentType;
 import at.technikum_wien.httpserver.http.HttpStatus;
@@ -8,6 +10,7 @@ import at.technikum_wien.httpserver.server.Request;
 import at.technikum_wien.httpserver.server.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.util.Collection;
 import java.util.List;
 
 public class UserController extends Controller{
@@ -99,5 +102,29 @@ public class UserController extends Controller{
                 ContentType.JSON,
                 "{ \"message\" : \"Internal Server Error\" }"
         );
+    }
+
+    public Response getUsersPerRepository() {
+        UnitOfWork unitOfWork = new UnitOfWork();
+        try (unitOfWork) {
+            Collection<User> userData = new UserRepository(unitOfWork).findAllUser();
+            String userDataJSON = this.getObjectMapper().writeValueAsString(userData);
+            unitOfWork.commitTransaction();
+            System.out.println(userDataJSON);
+            return new Response(
+                    HttpStatus.OK,
+                    ContentType.JSON,
+                    userDataJSON
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            unitOfWork.rollbackTransaction();
+            return new Response(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    ContentType.JSON,
+                    "{ \"message\" : \"Internal Server Error\" }"
+            );
+        }
     }
 }
