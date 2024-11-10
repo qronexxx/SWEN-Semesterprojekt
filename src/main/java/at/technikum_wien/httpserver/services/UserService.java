@@ -19,9 +19,9 @@ public class UserService implements Service {
     public Response handleRequest(Request request){
         if (request.getMethod() == Method.GET &&
                 request.getPathParts().size() > 1) {
-            return this.userController.getUser(request.getPathParts().get(1));
+            return this.userController.getUserPerRepository(request.getPathParts().get(1));
         } else if (request.getMethod() == Method.GET) {
-            return this.userController.getUsersPerRepository();
+            return this.userController.getAllUsersPerRepository();
         } else if (request.getMethod() == Method.POST) {
             return this.userController.addUser(request);
         }else if (request.getMethod() == Method.PUT) {

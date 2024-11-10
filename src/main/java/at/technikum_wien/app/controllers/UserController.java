@@ -104,7 +104,7 @@ public class UserController extends Controller{
         );
     }
 
-    public Response getUsersPerRepository() {
+    public Response getAllUsersPerRepository() {
         UnitOfWork unitOfWork = new UnitOfWork();
         try (unitOfWork) {
             Collection<User> userData = new UserRepository(unitOfWork).findAllUser();
@@ -120,6 +120,34 @@ public class UserController extends Controller{
             e.printStackTrace();
 
             unitOfWork.rollbackTransaction();
+            return new Response(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    ContentType.JSON,
+                    "{ \"message\" : \"Internal Server Error\" }"
+            );
+        }
+    }
+
+    public Response getUserPerRepository(String username){
+        UnitOfWork unitOfWork = new UnitOfWork();
+        try{
+            User userData = new UserRepository(unitOfWork).findUserbyUsername(username);
+            if(userData == null){
+                return new Response(
+                        HttpStatus.NOT_FOUND,
+                        ContentType.JSON,
+                        "{ \"message\": \"User not found\" }"
+                );
+            }
+
+            String userJSON = this.getObjectMapper().writeValueAsString(userData);
+            return new Response(
+                    HttpStatus.OK,
+                    ContentType.JSON,
+                    userJSON
+            );
+        }catch (JsonProcessingException e){
+            e.printStackTrace();
             return new Response(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     ContentType.JSON,

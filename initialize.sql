@@ -12,11 +12,14 @@
 
 -- Tabelle `person` erstellen, wenn sie nicht existiert
 
-CREATE TABLE IF NOT EXISTS person (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL
+CREATE TABLE IF NOT EXISTS users (
+    username VARCHAR(50) PRIMARY KEY,
+    password VARCHAR(50) NOT NULL,
+    coins INT DEFAULT 50,
+    elo INT DEFAULT 100,
+    is_admin BOOLEAN DEFAULT FALSE
     );
 
+
 -- Beispiel-Datensatz einfügen
-INSERT INTO person (username, password) VALUES ('kienboec', 'daniel');
+INSERT INTO user (username, password) VALUES ('kienboec', 'daniel');
