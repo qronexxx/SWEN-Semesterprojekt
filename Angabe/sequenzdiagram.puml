@@ -1,0 +1,74 @@
+@startuml
+actor Benutzer
+participant "HTTP Client" as Client
+participant "HTTP Server" as Server
+participant "BattlesController" as Controller
+participant "BattleField" as BattleField
+participant "Spieler1" as Spieler1
+participant "Spieler2" as Spieler2
+participant "Karte1" as Karte1
+participant "Karte2" as Karte2
+
+Benutzer -> Client: Sende Kampf-Anfrage (POST /battles)
+Client -> Server: HTTP POST /battles
+Server -> Controller: startBattle()
+Controller -> BattleField: initBattle()
+
+alt Spieler in Lobby verfügbar
+    BattleField -> Spieler1: getDeck()
+    BattleField -> Spieler2: getDeck()
+    
+    loop Runden bis Sieg oder Unentschieden
+        BattleField -> Spieler1: getRandomCard()
+        Spieler1 -> Spieler1: Wähle Karte1
+        BattleField <- Spieler1: Karte1
+
+        BattleField -> Spieler2: getRandomCard()
+        Spieler2 -> Spieler2: Wähle Karte2
+        BattleField <- Spieler2: Karte2
+
+        BattleField -> BattleField: prüfeSpecialRules(Karte1, Karte2)
+        alt Spezialregel zutreffend
+            BattleField -> BattleField: Setze Schaden entsprechend
+        else
+            BattleField -> Karte1: calculateDamage(Karte2)
+            BattleField <- Karte1: Schaden1
+
+            BattleField -> Karte2: calculateDamage(Karte1)
+            BattleField <- Karte2: Schaden2
+        end
+
+        BattleField -> BattleField: wendeBoosterAn()
+        alt Schaden1 > Schaden2
+            BattleField -> Spieler2: removeCard(Karte2)
+            BattleField -> Spieler1: addCard(Karte2)
+            BattleField -> BattleField: logge Ergebnis
+        else Schaden2 > Schaden1
+            BattleField -> Spieler1: removeCard(Karte1)
+            BattleField -> Spieler2: addCard(Karte1)
+            BattleField -> BattleField: logge Ergebnis
+        else
+            BattleField -> BattleField: Runde unentschieden
+        end
+    end
+
+    alt Spieler1 gewinnt
+        BattleField -> Spieler1: updateELO(+3)
+        BattleField -> Spieler2: updateELO(-5)
+    else Spieler2 gewinnt
+        BattleField -> Spieler2: updateELO(+3)
+        BattleField -> Spieler1: updateELO(-5)
+    else Unentschieden
+        BattleField -> Spieler1: updateELO(+3)
+        BattleField -> Spieler2: updateELO(-5)
+    end
+
+    Controller <- BattleField: Kampf-Ergebnis mit Log
+    Controller -> Server: Generiere Antwort mit Kampf-Log
+else Warten auf Gegner
+    Controller -> Server: Antwortet mit Warte-Status
+end
+
+Server -> Client: HTTP Response
+Client -> Benutzer: Zeige Kampf-Ergebnis oder Warte-Nachricht
+@enduml
