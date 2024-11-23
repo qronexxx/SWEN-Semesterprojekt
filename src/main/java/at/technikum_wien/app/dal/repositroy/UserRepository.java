@@ -41,7 +41,7 @@ public class UserRepository {
 
             return userRows;
         } catch (SQLException e) {
-            throw new DataAccessException("Select nicht erfolgreich", e);
+            throw new DataAccessException("Select failed", e);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -72,7 +72,57 @@ public class UserRepository {
 
             return user;
         } catch (SQLException e) {
-            throw new DataAccessException("Select nicht erfolgreich", e);
+            throw new DataAccessException("Select failed", e);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public User createUser(User user) {
+        try(PreparedStatement preparedStatement =
+                this.unitOfWork.prepareStatement("""
+                insert into users(username, password) 
+                VALUES (?, ?);
+            """))
+        {
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getPassword());
+
+
+            int affectedRows = preparedStatement.executeUpdate();
+            System.out.println(new ObjectMapper().writeValueAsString(user));
+            if(affectedRows > 0){
+                return user;
+            }else{
+                throw new DataAccessException("Insert nicht erfolgreich, keine Zeilen betroffen.");
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("insert failed", e);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public User updateUser(User user) {
+        try(PreparedStatement preparedStatement =
+                    this.unitOfWork.prepareStatement("""
+                insert into users(username, password) 
+                VALUES (?, ?);
+            """))
+        {
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getPassword());
+
+
+            int affectedRows = preparedStatement.executeUpdate();
+            System.out.println(new ObjectMapper().writeValueAsString(user));
+            if(affectedRows > 0){
+                return user;
+            }else{
+                throw new DataAccessException("Insert nicht erfolgreich, keine Zeilen betroffen.");
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("insert failed", e);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

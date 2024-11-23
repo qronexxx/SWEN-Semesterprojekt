@@ -1,7 +1,9 @@
 package at.technikum_wien.app.controllers;
 
 import at.technikum_wien.app.business.UserDummyDAL;
+import at.technikum_wien.app.dal.UnitOfWork;
 import at.technikum_wien.app.modles.User;
+import at.technikum_wien.app.dal.repositroy.UserRepository;
 import at.technikum_wien.httpserver.http.ContentType;
 import at.technikum_wien.httpserver.http.HttpStatus;
 import at.technikum_wien.httpserver.server.Request;
@@ -10,24 +12,24 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class SessionController extends Controller {
     // POST /sessions
+    UnitOfWork unitOfWork = new UnitOfWork();
+    UserRepository userRepository = new UserRepository(unitOfWork);
+
+
     public Response handleLogin(Request request) {
         try {
             User credentialsFromRequest = this.getObjectMapper().readValue(request.getBody(), User.class);
+            User sessionUser = userRepository.findUserbyUsername(credentialsFromRequest.getUsername());
 
-            for (User user : UserDummyDAL.getUserData()) {
-                if (user.getUsername().equals(credentialsFromRequest.getUsername()) &&
-                        user.getPassword().equals(credentialsFromRequest.getPassword())) {
-
-                    // if user found
-                    String token = user.getUsername() + "-mtcgToken";
-                    return new Response(
-                            HttpStatus.OK,
-                            ContentType.JSON,
-                            "{ \"token\": \"" + token + "\" }"
-                    );
-                }
+            if(credentialsFromRequest.getUsername().equals(sessionUser.getUsername()) && credentialsFromRequest.getPassword().equals(sessionUser.getPassword())) {
+                // if user found
+                String token = credentialsFromRequest.getUsername() + "-mtcgToken";
+                return new Response(
+                        HttpStatus.OK,
+                        ContentType.JSON,
+                        "{ \"token\": \"" + token + "\" }"
+                );
             }
-
             // user not found or invalid password
             return new Response(
                     HttpStatus.UNAUTHORIZED,

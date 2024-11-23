@@ -1,5 +1,7 @@
 package at.technikum_wien.app.modles;
 import at.technikum_wien.app.business.CardCollection;
+import com.fasterxml.jackson.annotation.JacksonInject;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +13,8 @@ public class User {
     private String password;
     private int coins;
     private int elo;
+    private String bio;
+    private String image;
     private CardCollection stack;
     private CardCollection deck;
     private boolean isAdmin;
@@ -21,6 +25,8 @@ public class User {
             setElo(100);
             setCoins(50);
             setAdmin(false);
+            setBio("");
+            setImage("");
     }
 
     public User(String username, String password){
@@ -31,6 +37,8 @@ public class User {
         this.deck = new CardCollection(4);
         this.stack = new CardCollection();
         setAdmin(false);
+        setBio("");
+        setImage("");
     }
 
     public User(String username, String password, boolean isAdmin){
@@ -41,5 +49,7 @@ public class User {
         setAdmin(isAdmin);
         this.deck = new CardCollection(4);
         this.stack = new CardCollection();
+        setBio("");
+        setImage("");
     }
 }

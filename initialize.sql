@@ -10,7 +10,7 @@
     --OR
 --docker exec -it mctg_db psql -U postgres
 
--- Tabelle `person` erstellen, wenn sie nicht existiert
+-- Tabelle `users` erstellen, wenn sie nicht existiert
 
 CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) PRIMARY KEY,
