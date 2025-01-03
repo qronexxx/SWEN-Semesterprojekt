@@ -18,8 +18,9 @@ public class PackagesService implements Service {
     @Override
     public Response handleRequest(Request request){
         if (request.getMethod() == Method.POST) {
-            return this.packagesController.createPackage();
+            return this.packagesController.createPackage(request);
         }
+
         return new Response(
                 HttpStatus.BAD_REQUEST,
                 ContentType.JSON,

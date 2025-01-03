@@ -1,6 +1,6 @@
 package at.technikum_wien.app.controllers;
 
-import at.technikum_wien.app.business.UserDummyDAL;
+
 import at.technikum_wien.app.dal.UnitOfWork;
 import at.technikum_wien.app.dal.repositroy.UserRepository;
 import at.technikum_wien.app.modles.User;
@@ -10,15 +10,14 @@ import at.technikum_wien.httpserver.server.Request;
 import at.technikum_wien.httpserver.server.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+
 import java.util.Collection;
 import java.util.List;
 
 public class UserController extends Controller{
-    private UserDummyDAL userDAL;
 
     public UserController() {
         // Nur noch für die Dummy-JUnit-Tests notwendig. Stattdessen ein RepositoryPattern verwenden.
-        this.userDAL = new UserDummyDAL();
 
     }
 
@@ -47,10 +46,10 @@ public class UserController extends Controller{
         }
     }
     // GET /users(:username
-    public Response getUserPerRepository(String username){
+    public Response getUserPerRepository(String Username){
         UnitOfWork unitOfWork = new UnitOfWork();
         try{
-            User userData = new UserRepository(unitOfWork).findUserbyUsername(username);
+            User userData = new UserRepository(unitOfWork).findUserbyUsername(Username);
             if(userData == null){
                 return new Response(
                         HttpStatus.NOT_FOUND,

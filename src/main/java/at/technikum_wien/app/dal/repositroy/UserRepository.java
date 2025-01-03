@@ -30,8 +30,7 @@ public class UserRepository {
             {
                 User user = new User(
                         resultSet.getString("username"),
-                        resultSet.getString("password"),
-                        resultSet.getBoolean("is_admin")
+                        resultSet.getString("password")
                 );
                 user.setCoins(resultSet.getInt("coins"));
                 user.setElo(resultSet.getInt("elo"));
@@ -62,8 +61,7 @@ public class UserRepository {
             {
                 user = new User(
                         resultSet.getString("username"),
-                        resultSet.getString("password"),
-                        resultSet.getBoolean("is_admin")
+                        resultSet.getString("password")
                 );
                 user.setCoins(resultSet.getInt("coins"));
                 user.setElo(resultSet.getInt("elo"));

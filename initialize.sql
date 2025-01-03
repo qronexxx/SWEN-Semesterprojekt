@@ -12,14 +12,58 @@
 
 -- Tabelle `users` erstellen, wenn sie nicht existiert
 
+-- to quick delete to use the sh script:         delete from packages; delete from cards; delete from users;
+
 CREATE TABLE IF NOT EXISTS users (
-    username VARCHAR(50) PRIMARY KEY,
-    password VARCHAR(50) NOT NULL,
-    coins INT DEFAULT 50,
-    elo INT DEFAULT 100,
-    is_admin BOOLEAN DEFAULT FALSE
-    );
+    Username VARCHAR(50) PRIMARY KEY,
+    Password VARCHAR(50) NOT NULL,
+    Name VARCHAR(50),
+    Coins INT DEFAULT 50,
+    Elo INT DEFAULT 100,
+    Wins INT DEFAULT 0,
+    Losses INT DEFAULT 0,
+    Bio VARCHAR(100),
+    Image VARCHAR(50)
+    )
+
+CREATE TABLE IF NOT EXISTS Cards (
+    CardID UUID PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Damage DECIMAL(5,2) NOT NULL,
+);
+
+CREATE TABLE IF NOT EXISTS Packages (
+    PackageID SERIAL PRIMARY KEY,
+    Card1 UUID REFERENCES Cards (CardID),
+    Card2 UUID REFERENCES Cards (CardID),
+    Card3 UUID REFERENCES Cards (CardID),
+    Card4 UUID REFERENCES Cards (CardID),
+    Card5 UUID REFERENCES Cards (CardID)
+);
+
+CREATE TABLE IF NOT EXISTS UserStacks (
+    Username VARCHAR(50) REFERENCES Users(Username),
+    CardID UUID REFERENCES Cards(CardID),
+    PRIMARY KEY (Username, CardID)
+);
+
+CREATE TABLE IF NOT EXISTS Decks (
+    Username VARCHAR(50) REFERENCES Users(Username) PRIMARY KEY,
+    Card1 UUID REFERENCES Cards (CardID),
+    Card2 UUID REFERENCES Cards (CardID),
+    Card3 UUID REFERENCES Cards (CardID),
+    Card4 UUID REFERENCES Cards (CardID)
+);
+
+
+CREATE TABLE IF NOT EXISTS Transactions (
+    TransactionID SERIAL PRIMARY KEY,
+    Username VARCHAR(50) REFERENCES Users (Username),
+    PackageID INT REFERENCES Packages (PackageID),
+    Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 
 
 -- Beispiel-Datensatz einfügen
-INSERT INTO user (username, password) VALUES ('kienboec', 'daniel');
+INSERT INTO user (username, password) VALUES ('test', 'test');

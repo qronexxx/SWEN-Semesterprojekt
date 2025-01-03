@@ -104,7 +104,7 @@ public class BattleField {
                 (card1.getName().equals("Dragon") && card2.getName().equals("FireElf"));
     }
 
-    private int getRandomCardIndex(CardCollection deck) {
+    private int getRandomCardIndex(Deck deck) {
         Random rand = new Random();
         return rand.nextInt(deck.size());
     }

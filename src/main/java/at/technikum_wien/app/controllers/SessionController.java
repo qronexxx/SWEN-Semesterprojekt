@@ -1,6 +1,7 @@
 package at.technikum_wien.app.controllers;
 
-import at.technikum_wien.app.business.UserDummyDAL;
+
+import at.technikum_wien.app.business.TokenManager;
 import at.technikum_wien.app.dal.UnitOfWork;
 import at.technikum_wien.app.modles.User;
 import at.technikum_wien.app.dal.repositroy.UserRepository;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class SessionController extends Controller {
     // POST /sessions
+    private final TokenManager tokenManager = TokenManager.getInstance();
     UnitOfWork unitOfWork = new UnitOfWork();
     UserRepository userRepository = new UserRepository(unitOfWork);
 
@@ -24,6 +26,8 @@ public class SessionController extends Controller {
             if(credentialsFromRequest.getUsername().equals(sessionUser.getUsername()) && credentialsFromRequest.getPassword().equals(sessionUser.getPassword())) {
                 // if user found
                 String token = credentialsFromRequest.getUsername() + "-mtcgToken";
+                tokenManager.addToken(token, sessionUser.getUsername());
+
                 return new Response(
                         HttpStatus.OK,
                         ContentType.JSON,
