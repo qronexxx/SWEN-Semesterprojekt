@@ -1,5 +1,6 @@
 package at.technikum_wien.app.modles;
 
+import at.technikum_wien.app.dto.CardDTO;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.ArrayList;

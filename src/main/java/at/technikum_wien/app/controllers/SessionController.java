@@ -38,7 +38,7 @@ public class SessionController extends Controller {
             return new Response(
                     HttpStatus.UNAUTHORIZED,
                     ContentType.JSON,
-                    "{ \"message\": \"Invalid username/password provided\" }"
+                    "{ \"message\": \"Login failed\"}\" }"
             );
         } catch (JsonProcessingException e) {
             e.printStackTrace();

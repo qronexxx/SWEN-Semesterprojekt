@@ -15,10 +15,16 @@ public class User {
 
     @JsonProperty("Password")
     private String Password;
+
+    @JsonProperty("Name")
     private String Name;
     private int Coins;
     private int Elo;
+
+    @JsonProperty("Bio")
     private String Bio;
+
+    @JsonProperty("Image")
     private String Image;
     private Stack Stack;
     private Deck Deck;
@@ -33,6 +39,12 @@ public class User {
             setName("");
             setBio("");
             setImage("");
+    }
+
+    public User(String username, String Bio, String Image){
+        setUsername(username);
+        setBio(Bio);
+        setImage(Image);
     }
 
     public User(String Username, String Password){

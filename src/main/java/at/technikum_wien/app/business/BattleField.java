@@ -9,10 +9,11 @@ import java.util.Random;
 
 //Controller - Controller Interface abstrakte mothoden von get...
 
+
+@Getter
 public class BattleField {
     private User player1;
     private User player2;
-    @Getter
     private List<String> battleLog;
     private static final int MAX_ROUNDS = 100;
 
@@ -51,7 +52,7 @@ public class BattleField {
         }
     }
 
-    private void battleRound(Card card1, Card card2, int index1, int index2) {
+    public void battleRound(Card card1, Card card2, int index1, int index2) {
         double damage1 = calculateDamage(card1, card2);
         double damage2 = calculateDamage(card2, card1);
 
@@ -65,7 +66,8 @@ public class BattleField {
         }
 
         // Apply booster feature
-        if (new Random().nextBoolean()) {
+        Random rand = new Random();
+        if (rand.nextBoolean()) {
             damage1 *= 1.5;
             battleLog.add(player1.getUsername() + "'s " + card1.getName() + " received a damage booster!");
         } else {
@@ -86,22 +88,42 @@ public class BattleField {
         }
     }
 
-    private double calculateDamage(Card card1, Card card2) {
-        if (card1 instanceof MonsterCard && card2 instanceof MonsterCard) {
-            return card1.getDamage();
-        } else if (card1 instanceof SpellCard) {
-            return card1.getDamage() * card1.getElement().getEffectivenessAgainst(card2);
-        } else {
-            return card1.getDamage();
+    public double calculateDamage(Card card1, Card card2) {
+        Element element1 = card1.getElement();
+        Element element2 = card2.getElement();
+
+        switch (element1) {
+            case WATER:
+                if (element2 == Element.FIRE) {
+                    return card1.getDamage() * 2;
+                } else if (element2 == Element.REGULAR) {
+                    return card1.getDamage() * 0.5;
+                } else {
+                    return card1.getDamage();
+                }
+            case FIRE:
+                if (element2 == Element.REGULAR) {
+                    return card1.getDamage() * 2;
+                } else if (element2 == Element.WATER) {
+                    return card1.getDamage() * 0.5;
+                } else {
+                    return card1.getDamage();
+                }
+            case REGULAR:
+            default:
+                return card1.getDamage();
         }
     }
 
-    private boolean isSpecialRule(Card card1, Card card2) {
-        return (card1.getName().equals("Goblin") && card2.getName().equals("Dragon")) ||
-                (card1.getName().equals("Ork") && card2.getName().equals("Wizard")) ||
-                (card1.getName().equals("Knight") && card2 instanceof SpellCard && card2.getElement() instanceof WaterElement) ||
-                (card1 instanceof SpellCard && card2.getName().equals("Kraken")) ||
-                (card1.getName().equals("Dragon") && card2.getName().equals("FireElf"));
+    public boolean isSpecialRule(Card card1, Card card2) {
+        String name1 = card1.getName();
+        String name2 = card2.getName();
+
+        return (name1.equalsIgnoreCase("Goblin") && name2.equalsIgnoreCase("Dragon")) ||
+                (name1.equalsIgnoreCase("Ork") && name2.equalsIgnoreCase("Wizard")) ||
+                (name1.equalsIgnoreCase("Knight") && card2.getName().startsWith("Water")) ||
+                (card1 instanceof SpellCard && name2.equalsIgnoreCase("Kraken")) ||
+                (name1.equalsIgnoreCase("Dragon") && name2.equalsIgnoreCase("FireElf"));
     }
 
     private int getRandomCardIndex(Deck deck) {
@@ -113,5 +135,4 @@ public class BattleField {
         winner.setElo(winner.getElo() + 3);
         loser.setElo(loser.getElo() - 5);
     }
-
 }

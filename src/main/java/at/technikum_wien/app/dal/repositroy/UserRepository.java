@@ -2,6 +2,7 @@ package at.technikum_wien.app.dal.repositroy;
 
 import at.technikum_wien.app.dal.DataAccessException;
 import at.technikum_wien.app.dal.UnitOfWork;
+import at.technikum_wien.app.dto.UserDTO;
 import at.technikum_wien.app.modles.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+
 
 public class UserRepository {
     private UnitOfWork unitOfWork;
@@ -34,15 +36,12 @@ public class UserRepository {
                 );
                 user.setCoins(resultSet.getInt("coins"));
                 user.setElo(resultSet.getInt("elo"));
-                System.out.println(new ObjectMapper().writeValueAsString(user));
                 userRows.add(user);
             }
 
             return userRows;
         } catch (SQLException e) {
             throw new DataAccessException("Select failed", e);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -65,14 +64,11 @@ public class UserRepository {
                 );
                 user.setCoins(resultSet.getInt("coins"));
                 user.setElo(resultSet.getInt("elo"));
-                System.out.println(new ObjectMapper().writeValueAsString(user));
             }
 
             return user;
         } catch (SQLException e) {
             throw new DataAccessException("Select failed", e);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
         }
     }
 
@@ -88,7 +84,6 @@ public class UserRepository {
 
 
             int affectedRows = preparedStatement.executeUpdate();
-            System.out.println(new ObjectMapper().writeValueAsString(user));
             if(affectedRows > 0){
                 return user;
             }else{
@@ -96,33 +91,52 @@ public class UserRepository {
             }
         } catch (SQLException e) {
             throw new DataAccessException("insert failed", e);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
         }
     }
 
-    public User updateUser(User user) {
-        try(PreparedStatement preparedStatement =
-                    this.unitOfWork.prepareStatement("""
-                insert into users(username, password) 
-                VALUES (?, ?);
-            """))
-        {
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2, user.getPassword());
+    public UserDTO giveUserdata(String username) {
+        UserDTO userDTO = null;
+        try (PreparedStatement preparedStatement =
+                     this.unitOfWork.prepareStatement("""
+                    SELECT name, bio, image FROM users
+                    WHERE username = ?
+                """)) {
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
+            if (resultSet.next()) {
+                userDTO = new UserDTO(
+                        resultSet.getString("name"),
+                        resultSet.getString("bio"),
+                        resultSet.getString("image")
+                );
+
+                // Optional: Serialize UserDTO für das Terminal
+                String userJSON = new ObjectMapper().writeValueAsString(userDTO);
+            }
+        } catch (SQLException | JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return userDTO;
+    }
+
+    public void updateUserInRepo(String username, String name, String bio, String image) {
+        String updateSQL = """
+                UPDATE users
+                SET Name = ?, Bio = ?, Image = ?
+                WHERE username = ?
+            """;
+
+        try (PreparedStatement preparedStatement = this.unitOfWork.prepareStatement(updateSQL)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, bio);
+            preparedStatement.setString(3, image);
+            preparedStatement.setString(4, username);
 
             int affectedRows = preparedStatement.executeUpdate();
-            System.out.println(new ObjectMapper().writeValueAsString(user));
-            if(affectedRows > 0){
-                return user;
-            }else{
-                throw new DataAccessException("Insert nicht erfolgreich, keine Zeilen betroffen.");
-            }
+
         } catch (SQLException e) {
-            throw new DataAccessException("insert failed", e);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new DataAccessException("Update fehlgeschlagen", e);
         }
     }
 }

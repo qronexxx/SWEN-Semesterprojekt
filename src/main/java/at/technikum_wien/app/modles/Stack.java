@@ -6,9 +6,13 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
+@Getter
+@Setter
 public class Stack {
-    @Getter
-    @Setter
+    @JsonProperty("Cards")
     private List<Card> cards;
 
     public Stack() {

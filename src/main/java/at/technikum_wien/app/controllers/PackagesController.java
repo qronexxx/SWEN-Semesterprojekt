@@ -1,6 +1,6 @@
 package at.technikum_wien.app.controllers;
 
-import at.technikum_wien.app.business.TokenManager;
+
 import at.technikum_wien.app.dal.DataAccessException;
 import at.technikum_wien.app.dal.UnitOfWork;
 import at.technikum_wien.app.dal.repositroy.PackageRepository;
@@ -24,10 +24,7 @@ public class PackagesController extends Controller {
             String authHeader = request.getHeaderMap().getHeader("Authorization");
             // TokenManager liefert uns z.B. den Usernamen
             String token = authHeader.substring(7);
-            System.out.println(token);
             String username = tokenManager.getUsernameForToken(token);
-            System.out.println(username);
-
 
             // Prüfen, ob Admin
             User user = userRepository.findUserbyUsername(username);;
