@@ -121,7 +121,7 @@ public class UserRepository {
             if(affectedRows > 0){
                 return user;
             }else{
-                throw new DataAccessException("Insert nicht erfolgreich, keine Zeilen betroffen.");
+                throw new DataAccessException("no lines affected from insert");
             }
         } catch (SQLException e) {
             throw new DataAccessException("insert failed", e);
@@ -170,7 +170,7 @@ public class UserRepository {
             int affectedRows = preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DataAccessException("Update fehlgeschlagen", e);
+            throw new DataAccessException("update failed", e);
         }
     }
 }

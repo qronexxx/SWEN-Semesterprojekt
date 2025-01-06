@@ -12,7 +12,7 @@
 
 -- Tabelle `users` erstellen, wenn sie nicht existiert
 
--- to quick delete to use the sh script: delete from userdecks; delete from userstacks; delete from packages; delete from cards; delete from users;
+-- to quick delete to use the sh script: delete from TradingDeals; delete from userdecks; delete from userstacks; delete from packages; delete from cards; delete from users;
 
 
 CREATE TABLE IF NOT EXISTS users (
@@ -53,6 +53,14 @@ CREATE TABLE IF NOT EXISTS UserDecks (
     CardPosition INT,
     CardID UUID REFERENCES Cards(CardID),
     PRIMARY KEY (Username, CardPosition)
+    );
+
+CREATE TABLE IF NOT EXISTS TradingDeals (
+    DealID UUID PRIMARY KEY,
+    Username VARCHAR(50) REFERENCES users(Username) ON DELETE CASCADE,
+    CardToTrade UUID REFERENCES Cards(CardID) ON DELETE CASCADE,
+    Type VARCHAR(50) NOT NULL,
+    MinimumDamage INT NOT NULL
     );
 
 -- Beispiel-Datensatz einfügen

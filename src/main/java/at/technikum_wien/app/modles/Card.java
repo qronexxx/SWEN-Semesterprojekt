@@ -42,5 +42,10 @@ public class Card {
             return Element.REGULAR;
         }
     }
+
+    @JsonIgnore
+    public String getType() {
+        return getElement().toString().toLowerCase();
+    }
 }
 

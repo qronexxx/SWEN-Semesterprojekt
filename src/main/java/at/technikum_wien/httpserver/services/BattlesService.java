@@ -34,7 +34,7 @@ public class BattlesService implements Service {
                 return new Response(
                         HttpStatus.UNAUTHORIZED,
                         ContentType.JSON,
-                        "{ \"message\": \"Access token ist ungültig\" }"
+                        "{ \"message\": \"Access token invalid\" }"
                 );
             }
 
@@ -43,7 +43,7 @@ public class BattlesService implements Service {
         return new Response(
                 HttpStatus.BAD_REQUEST,
                 ContentType.JSON,
-                "{ \"message\": \"Ungültige Anfrage\" }"
+                "{ \"message\": \"invalid request\" }"
         );
     }
 }

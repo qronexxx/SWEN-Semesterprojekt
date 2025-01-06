@@ -61,7 +61,7 @@ public class PackageRepository {
 
     public void buyPackages(String username) {
         try {
-            // User vorab laden und prüfen, ob genug Coins vorhanden
+            // check if user has enough coins
             User user = new UserRepository(unitOfWork).findUserByUsername(username);
             if(user == null) {
                 throw new DataAccessException("User not found");
@@ -70,7 +70,7 @@ public class PackageRepository {
                 throw new DataAccessException("Not enough coins");
             }
 
-            // Erstes Package abfragen
+            // select first package
             PreparedStatement psSelect = unitOfWork.prepareStatement("""
                 SELECT PackageID, Card1, Card2, Card3, Card4, Card5
                 FROM Packages
@@ -88,11 +88,10 @@ public class PackageRepository {
                 cards.add(rs.getString("Card4"));
                 cards.add(rs.getString("Card5"));
             } else {
-                // Kein Package vorhanden
                 throw new DataAccessException("No package available");
             }
 
-            // Karten in UserStacks einfügen
+            // insert cards into UserStacks
             PreparedStatement psInsertStack = unitOfWork.prepareStatement("""
             INSERT INTO UserStacks(Username, CardID) VALUES (?, ?)
         """);
@@ -103,7 +102,7 @@ public class PackageRepository {
             }
             psInsertStack.executeBatch();
 
-            // Package löschen
+            // delete package
             PreparedStatement psDeletePackage = unitOfWork.prepareStatement("""
                 DELETE FROM Packages WHERE PackageID = ?
                 """);

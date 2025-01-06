@@ -1,5 +1,6 @@
 package at.technikum_wien.app.dal.repositroy;
 
+import at.technikum_wien.app.dal.DataAccessException;
 import at.technikum_wien.app.dal.UnitOfWork;
 import at.technikum_wien.app.modles.Card;
 import at.technikum_wien.app.modles.Stack;
@@ -37,6 +38,41 @@ public class CardRepository {
         }
 
         return stack;
+    }
+
+    public boolean isCardOwnedByUser(UUID cardId, String username) throws DataAccessException {
+        String sql = """
+        SELECT 1 FROM UserStacks us
+        LEFT JOIN UserDecks ud ON us.Username = ud.Username AND us.CardID = ud.CardID
+        WHERE us.CardID = ? AND us.Username = ? AND ud.CardID IS NULL
+    """;
+        try (PreparedStatement ps = unitOfWork.prepareStatement(sql)) {
+            ps.setObject(1, cardId);
+            ps.setString(2, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Error checking card owner.", e);
+        }
+    }
+
+    public Card getCardById(UUID cardId) throws DataAccessException {
+        String sql = "SELECT CardID, Name, Damage FROM Cards WHERE CardID = ?";
+        try (PreparedStatement ps = unitOfWork.prepareStatement(sql)) {
+            ps.setObject(1, cardId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String id = rs.getString("CardID");
+                    String name = rs.getString("Name");
+                    int damage = rs.getInt("Damage");
+                    return new Card(UUID.fromString(id), name, damage);
+                }
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Error fetching card by ID.", e);
+        }
     }
 }
 

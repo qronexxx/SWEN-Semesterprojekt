@@ -3,7 +3,6 @@ package at.technikum_wien.app.controllers;
 import at.technikum_wien.app.dal.DataAccessException;
 import at.technikum_wien.app.dal.UnitOfWork;
 import at.technikum_wien.app.dal.repositroy.DeckRepository;
-import at.technikum_wien.app.modles.Card;
 import at.technikum_wien.app.modles.Deck;
 import at.technikum_wien.httpserver.http.ContentType;
 import at.technikum_wien.httpserver.http.HttpStatus;
@@ -42,7 +41,7 @@ public class DeckController extends Controller {
 
     public Response setUserDeck(String username, Request request) {
         try {
-            // Liste mit CardIDs aus JSON
+            // List with CardIDs in JSON
             List<String> cardIds = this.getObjectMapper().readValue(request.getBody(), ArrayList.class);
 
             deckRepository.setUserDeck(username, cardIds);

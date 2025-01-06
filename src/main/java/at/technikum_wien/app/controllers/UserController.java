@@ -18,10 +18,7 @@ import java.util.List;
 
 public class UserController extends Controller{
 
-    public UserController() {
-        // Nur noch für die Dummy-JUnit-Tests notwendig. Stattdessen ein RepositoryPattern verwenden.
-
-    }
+    public UserController() {}
 
     // GET /users
     public Response getAllUsersPerRepository() {
@@ -108,12 +105,9 @@ public class UserController extends Controller{
         UnitOfWork unitOfWork = new UnitOfWork();
         UserRepository userRepository = new UserRepository(unitOfWork);
         try {
-
-            // request.getBody() => "{ \"id\": 4, \"city\": \"Graz\", ... }
             User user = this.getObjectMapper().readValue(request.getBody(), User.class);
 
             if(userRepository.findUserByUsername(user.getUsername()) != null){
-                // Return 409 Conflict if user already exists
                 return new Response(
                         HttpStatus.CONFLICT,
                         ContentType.JSON,
@@ -145,13 +139,13 @@ public class UserController extends Controller{
         UnitOfWork unitOfWork = new UnitOfWork();
         UserRepository userRepository = new UserRepository(unitOfWork);
         try {
-            // Parse das Request-Body JSON in ein UpdateUserDTO
+            // Parse Request-Body JSON to UserDTO
             UserDTO updateData = this.getObjectMapper().readValue(request.getBody(), UserDTO.class);
 
-            // Aktualisiere den Benutzer in der Datenbank
+            // update user in repo
             userRepository.updateUserInRepo(Username, updateData.getName(), updateData.getBio(), updateData.getImage());
 
-            // Holt die aktualisierten Benutzerdaten
+            // Checks if User not found after update
             UserDTO updatedUser = userRepository.giveUserdata(Username);
             if (updatedUser == null) {
                 return new Response(

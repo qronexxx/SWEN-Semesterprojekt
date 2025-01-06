@@ -19,7 +19,7 @@ public class TransactionsController extends Controller {
     public Response acquirePackage(Request request) {
         try {
             String authHeader = request.getHeaderMap().getHeader("Authorization");
-            // TokenManager liefert uns z.B. den Usernamen
+            // get username with Token manager
             String token = authHeader.substring(7);
             String username = tokenManager.getUsernameForToken(token);
 

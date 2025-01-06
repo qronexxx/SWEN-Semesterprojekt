@@ -35,4 +35,14 @@ public class Deck {
     public int size() {
         return cards.size();
     }
+
+    public int countElements(Element element) {
+        int count = 0;
+        for (Card card : cards) {
+            if (card.getElement() == element) {
+                count++;
+            }
+        }
+        return count;
+    }
 }

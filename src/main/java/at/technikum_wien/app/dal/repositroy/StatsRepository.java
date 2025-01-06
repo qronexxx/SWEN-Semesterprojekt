@@ -37,7 +37,6 @@ public class StatsRepository {
                         resultSet.getInt("losses")
                 );
 
-                // Optional: Serialize UserDTO für das Terminal
                 String userJSON = new ObjectMapper().writeValueAsString(userStatsDTO);
             }
         } catch (SQLException | JsonProcessingException e) {

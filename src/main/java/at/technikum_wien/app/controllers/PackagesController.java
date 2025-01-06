@@ -22,25 +22,25 @@ public class PackagesController extends Controller {
     public Response createPackage(Request request) {
         try (UnitOfWork unitOfWork = new UnitOfWork()) {
             String authHeader = request.getHeaderMap().getHeader("Authorization");
-            // TokenManager liefert uns z.B. den Usernamen
+
+            // Get Usernamen with tokenmanager
             String token = authHeader.substring(7);
             String username = tokenManager.getUsernameForToken(token);
 
-            // Prüfen, ob Admin
+            // check if Admin
             User user = userRepository.findUserByUsername(username);;
             if(!"admin".equals(user.getUsername())) {
                 return new Response(HttpStatus.FORBIDDEN, ContentType.JSON, "{ \"message\": \"Not allowed\"}");
             }
 
-            // JSON zu Card[] parsen
+            // parse JSON to Card[]
             Card[] cards = getObjectMapper().readValue(request.getBody(), Card[].class);
             if (cards.length != 5) {
                 return new Response(HttpStatus.BAD_REQUEST, ContentType.JSON, "{ \"message\": \"Exactly 5 cards required\"}");
             }
 
-            // Karten anlegen und Package-Eintrag erzeugen
             PackageRepository packagesRepo = new PackageRepository(unitOfWork);
-            packagesRepo.createPackage(cards);  // wirft ggf. Exception bei Konflikten
+            packagesRepo.createPackage(cards);
 
             unitOfWork.commitTransaction();
             return new Response(HttpStatus.CREATED, ContentType.JSON, "{ \"message\": \"Package created\"}");

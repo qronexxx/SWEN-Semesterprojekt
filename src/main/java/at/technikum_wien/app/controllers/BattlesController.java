@@ -33,10 +33,9 @@ public class BattlesController extends Controller {
             User opponent = lobby.poll();
             if (opponent == null) {
                 lobby.add(currentUser);
-                return new Response(HttpStatus.OK, ContentType.JSON, "{ \"message\": \"Warte auf einen Gegner...\" }");
+                return new Response(HttpStatus.OK, ContentType.JSON, "{ \"message\": \"Waiting for opponent\" }...\" }");
             }
 
-            System.out.println(currentUser.getUsername() + opponent.getUsername());
             BattleField battleField = new BattleField(currentUser, opponent);
             String result = battleField.startBattle();
 
@@ -47,12 +46,11 @@ public class BattlesController extends Controller {
                 System.out.println(log);
             }
 
-            // Aktualisiere User-Statistiken
             userRepository.updateUserStats(currentUser);
             userRepository.updateUserStats(opponent);
             unitOfWork.commitTransaction();
 
-            String battleLogJson = objectMapper.writeValueAsString(battleField.getBattleLog());
+            String battleLogJson = objectMapper.writeValueAsString(result);
             return new Response(HttpStatus.OK, ContentType.JSON, battleLogJson);
         } catch (Exception e) {
             e.printStackTrace();
