@@ -7,9 +7,11 @@ import at.technikum_wien.app.modles.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import at.technikum_wien.app.modles.Element;
 
 public class BattleLogikTest {
     private BattleField battleField;
+    private Element element;
 
     @BeforeEach
     void setUp() {
@@ -41,7 +43,7 @@ public class BattleLogikTest {
     @Test
     void testSpecialRule_WaterSpellAgainstKnight() {
         Card knight = new Card("Knight", 55);
-        Card waterSpell = new SpellCard("WaterSpell", 20);
+        Card waterSpell = new SpellCard("WaterSpell", 20, element);
         double dmgKnight = battleField.calculateDamage(knight, waterSpell);
         boolean special = battleField.isSpecialRule(knight, waterSpell);
         if(special) dmgKnight = 0;
@@ -52,29 +54,29 @@ public class BattleLogikTest {
     @Test
     void testSpecialRule_KrakenImmuneToSpell() {
         Card kraken = new Card("Kraken", 60);
-        Card fireSpell = new SpellCard("FireSpell", 30);
-        double dmgKraken = battleField.calculateDamage(kraken, fireSpell);
-        boolean special = battleField.isSpecialRule(kraken, fireSpell);
+        Card fireSpell = new SpellCard("FireSpell", 30, element);
+        double dmgKraken = battleField.calculateDamage(fireSpell, kraken);
+        boolean special = battleField.isSpecialRule(fireSpell, kraken);
         if(special) dmgKraken = 0;
-        assertFalse(special);
-        assertEquals(60, dmgKraken);
+        assertTrue(special);
+        assertEquals(0, dmgKraken);
     }
 
     @Test
     void testSpecialRule_FireElfEvadesDragon() {
         Card elf = new Card("FireElf", 35);
         Card dragon = new Card("Dragon", 50);
-        double dmgElf = battleField.calculateDamage(elf, dragon);
-        boolean special = battleField.isSpecialRule(elf, dragon);
+        double dmgElf = battleField.calculateDamage(dragon, elf);
+        boolean special = battleField.isSpecialRule(dragon, elf);
         if(special) dmgElf = 0;
-        assertFalse(special);
-        assertEquals(70, dmgElf);
+        assertTrue(special);
+        assertEquals(0, dmgElf);
     }
 
     @Test
     void testSpellDamage_WaterAgainstFire() {
-        Card water = new SpellCard("WaterSpell", 20);
-        Card fire = new SpellCard("FireSpell", 25);
+        Card water = new SpellCard("WaterSpell", 20, element);
+        Card fire = new SpellCard("FireSpell", 25, element);
         double dmgWater = battleField.calculateDamage(water, fire);
         boolean special = battleField.isSpecialRule(water, fire);
         assertFalse(special);
@@ -83,8 +85,8 @@ public class BattleLogikTest {
 
     @Test
     void testSpellDamage_FireAgainstWater() {
-        Card fire = new SpellCard("FireSpell", 25);
-        Card water = new SpellCard("WaterSpell", 20);
+        Card fire = new SpellCard("FireSpell", 25, element);
+        Card water = new SpellCard("WaterSpell", 20, element);
         double dmgFire = battleField.calculateDamage(fire, water);
         boolean special = battleField.isSpecialRule(fire, water);
         assertFalse(special);
@@ -103,7 +105,7 @@ public class BattleLogikTest {
 
     @Test
     void testMixed_FireSpellVsRegular_NoSpecial() {
-        Card fireSpell = new SpellCard("FireSpell", 30);
+        Card fireSpell = new SpellCard("FireSpell", 30, element);
         Card troll = new Card("Troll", 20);
         double dmgF = battleField.calculateDamage(fireSpell, troll);
         boolean special = battleField.isSpecialRule(fireSpell, troll);
@@ -113,8 +115,8 @@ public class BattleLogikTest {
 
     @Test
     void testSpellVsSpell_SameElement_Fire() {
-        Card fire1 = new SpellCard("FireSpell", 20);
-        Card fire2 = new SpellCard("FireSpell", 30);
+        Card fire1 = new SpellCard("FireSpell", 20, element);
+        Card fire2 = new SpellCard("FireSpell", 30, element);
         double dmgFire1 = battleField.calculateDamage(fire1, fire2);
         boolean special = battleField.isSpecialRule(fire1, fire2);
         assertFalse(special);
@@ -123,8 +125,8 @@ public class BattleLogikTest {
 
     @Test
     void testSpellVsSpell_SameElement_Water() {
-        Card w1 = new SpellCard("WaterSpell", 25);
-        Card w2 = new SpellCard("WaterSpell", 10);
+        Card w1 = new SpellCard("WaterSpell", 25, element);
+        Card w2 = new SpellCard("WaterSpell", 10, element);
         double dmgW1 = battleField.calculateDamage(w1, w2);
         boolean special = battleField.isSpecialRule(w1, w2);
         assertFalse(special);
@@ -183,7 +185,7 @@ public class BattleLogikTest {
 
     @Test
     void testFireSpellVsRegularMonster_TwiceDamage() {
-        Card fireSpell = new SpellCard("FireSpell", 25);
+        Card fireSpell = new SpellCard("FireSpell", 25, element);
         Card regular = new Card("Knight", 30); // Knight is regular element
         double dmgF = battleField.calculateDamage(fireSpell, regular);
         boolean special = battleField.isSpecialRule(fireSpell, regular);
@@ -194,7 +196,7 @@ public class BattleLogikTest {
 
     @Test
     void testWaterSpellVsRegularMonster_HalfDamage() {
-        Card waterSpell = new SpellCard("WaterSpell", 20);
+        Card waterSpell = new SpellCard("WaterSpell", 20, element);
         Card regular = new Card("Troll", 30);
         double dmgW = battleField.calculateDamage(waterSpell, regular);
         boolean special = battleField.isSpecialRule(waterSpell, regular);
@@ -206,7 +208,7 @@ public class BattleLogikTest {
     @Test
     void testRegularMonsterVsSpell_NoElementEffect() {
         Card monster = new Card("Troll", 40);
-        Card spell = new SpellCard("RegularSpell", 25);
+        Card spell = new SpellCard("RegularSpell", 25, element);
         double dmgM = battleField.calculateDamage(monster, spell);
         boolean special = battleField.isSpecialRule(monster, spell);
         // If monster is regular and other is a spell with element regular => normal damage
@@ -216,8 +218,8 @@ public class BattleLogikTest {
 
     @Test
     void testWaterSpellVsWaterSpell_NoBoost() {
-        Card w1 = new SpellCard("WaterSpell", 30);
-        Card w2 = new SpellCard("WaterSpell", 40);
+        Card w1 = new SpellCard("WaterSpell", 30, element);
+        Card w2 = new SpellCard("WaterSpell", 40, element);
         double dmgW1 = battleField.calculateDamage(w1, w2);
         boolean special = battleField.isSpecialRule(w1, w2);
         // same element => no multiplier

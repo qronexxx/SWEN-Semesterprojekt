@@ -1,14 +1,10 @@
 package at.technikum_wien.app.modles;
-import at.technikum_wien.app.business.CardCollection;
-import com.fasterxml.jackson.annotation.JacksonInject;
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-
 public class User {
     @JsonProperty("Username")
     private String Username;
@@ -27,47 +23,47 @@ public class User {
     @JsonProperty("Image")
     private String Image;
     private Stack Stack;
-    private Deck Deck;
-    private int Losses;
-    private int Wins;
+    private Deck deck;
+    private int losses;
+    private int wins;
 
     public User(){
-            this.Deck = new Deck();
-            this.Stack = new Stack();
-            setElo(100);
-            setCoins(20);
-            setName("");
-            setBio("");
-            setImage("");
+        this.deck = new Deck();
+        setElo(100);
+        setCoins(20);
+        setName("");
+        setBio("");
+        setImage("");
     }
 
-    public User(String username, String Bio, String Image){
+    public User(String username, String bio, String image){
         setUsername(username);
-        setBio(Bio);
-        setImage(Image);
+        setBio(bio);
+        setImage(image);
     }
 
-    public User(String Username, String Password){
-        setUsername(Username);
-        setPassword(Password);
+    public User(String username, String password){
+        setUsername(username);
+        setPassword(password);
         setCoins(20);
         setElo(100);
-        this.Deck = new Deck();
-        this.Stack = new Stack();
+        this.deck = new Deck();
         setName("");
         setBio("");
         setImage("");
     }
 
-    public User(String Username, String Password, boolean isAdmin){
-        setUsername(Username);
-        setPassword(Password);
-        setCoins(20);
-        setElo(100);
-        this.Deck = new Deck();
-        this.Stack = new Stack();
-        setName("");
-        setBio("");
-        setImage("");
+    public User(String username, String password, String name, int coins, int elo, int wins, int losses, String bio, String image){
+        setUsername(username);
+        setPassword(password);
+        setName(name);
+        setCoins(coins);
+        setElo(elo);
+        setWins(wins);
+        setBio(bio);
+        setImage(image);
+        setLosses(losses);
+        setStack(new Stack());
+        setDeck(deck);
     }
 }

@@ -27,7 +27,7 @@ public class PackagesController extends Controller {
             String username = tokenManager.getUsernameForToken(token);
 
             // Prüfen, ob Admin
-            User user = userRepository.findUserbyUsername(username);;
+            User user = userRepository.findUserByUsername(username);;
             if(!"admin".equals(user.getUsername())) {
                 return new Response(HttpStatus.FORBIDDEN, ContentType.JSON, "{ \"message\": \"Not allowed\"}");
             }

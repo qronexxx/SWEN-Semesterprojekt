@@ -34,7 +34,7 @@ public class BattleField {
             battleRound(card1, card2, index1, index2);
             roundCount++;
         }
-
+        System.out.println(battleLog);
         if (roundCount == MAX_ROUNDS) {
             battleLog.add("The battle ended in a draw after 100 rounds.");
             return "Draw";
@@ -43,11 +43,11 @@ public class BattleField {
             return "Draw";
         } else if (player1.getDeck().isEmpty()) {
             battleLog.add(player2.getUsername() + " wins the battle!");
-            updateElo(player2, player1);
+            updateStats(player2, player1);
             return player2.getUsername() + " wins!";
         } else {
             battleLog.add(player1.getUsername() + " wins the battle!");
-            updateElo(player1, player2);
+            updateStats(player1, player2);
             return player1.getUsername() + " wins!";
         }
     }
@@ -121,7 +121,7 @@ public class BattleField {
 
         return (name1.equalsIgnoreCase("Goblin") && name2.equalsIgnoreCase("Dragon")) ||
                 (name1.equalsIgnoreCase("Ork") && name2.equalsIgnoreCase("Wizard")) ||
-                (name1.equalsIgnoreCase("Knight") && card2.getName().startsWith("Water")) ||
+                (name1.equalsIgnoreCase("Knight") && (card2.getName().startsWith("Water")) && card2 instanceof SpellCard) ||
                 (card1 instanceof SpellCard && name2.equalsIgnoreCase("Kraken")) ||
                 (name1.equalsIgnoreCase("Dragon") && name2.equalsIgnoreCase("FireElf"));
     }
@@ -131,8 +131,11 @@ public class BattleField {
         return rand.nextInt(deck.size());
     }
 
-    private void updateElo(User winner, User loser) {
+    private void updateStats(User winner, User loser) {
         winner.setElo(winner.getElo() + 3);
+        winner.setWins(winner.getWins() + 1);
+
         loser.setElo(loser.getElo() - 5);
+        loser.setLosses(loser.getLosses() + 1);
     }
 }

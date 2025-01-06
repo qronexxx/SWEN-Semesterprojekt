@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) {
 
-        test();
+        //test();
 
         Server server = new Server(10001, configureRouter());
         try {

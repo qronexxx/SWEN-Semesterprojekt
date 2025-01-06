@@ -62,7 +62,7 @@ public class PackageRepository {
     public void buyPackages(String username) {
         try {
             // User vorab laden und prüfen, ob genug Coins vorhanden
-            User user = new UserRepository(unitOfWork).findUserbyUsername(username);
+            User user = new UserRepository(unitOfWork).findUserByUsername(username);
             if(user == null) {
                 throw new DataAccessException("User not found");
             }

@@ -3,7 +3,7 @@ package at.technikum_wien.app.dal.repositroy;
 import at.technikum_wien.app.dal.DataAccessException;
 import at.technikum_wien.app.dal.UnitOfWork;
 import at.technikum_wien.app.dto.UserDTO;
-import at.technikum_wien.app.modles.User;
+import at.technikum_wien.app.modles.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -45,30 +45,64 @@ public class UserRepository {
         }
     }
 
-    public User findUserbyUsername(String username) {
-        try (PreparedStatement preparedStatement =
-                     this.unitOfWork.prepareStatement("""
-                    select * from users
-                    WHERE username = ?
-                """))
-        {
-            preparedStatement.setString(1, username);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            User user = null;
-
-            while(resultSet.next())
-            {
-                user = new User(
-                        resultSet.getString("username"),
-                        resultSet.getString("password")
+    public User findUserByUsername(String username) throws DataAccessException {
+        String sql = "SELECT username, password, name, coins, elo, wins, losses, bio, image FROM users WHERE username = ?";
+        try (PreparedStatement ps = unitOfWork.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                User user = new User(
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getInt("coins"),
+                        rs.getInt("elo"),
+                        rs.getInt("wins"),
+                        rs.getInt("losses"),
+                        rs.getString("bio"),
+                        rs.getString("image")
                 );
-                user.setCoins(resultSet.getInt("coins"));
-                user.setElo(resultSet.getInt("elo"));
+                loadUserDeck(user);
+                return user;
             }
-
-            return user;
+            return null;
         } catch (SQLException e) {
-            throw new DataAccessException("Select failed", e);
+            throw new DataAccessException("Error fetching user", e);
+        }
+    }
+
+    private void loadUserDeck(User user) throws SQLException, DataAccessException {
+        String sql = """
+            SELECT c.CardID, c.Name, c.Damage
+            FROM UserDecks ud
+            JOIN Cards c ON ud.CardID = c.CardID
+            WHERE ud.Username = ?
+            ORDER BY ud.CardPosition
+        """;
+        try (PreparedStatement ps = unitOfWork.prepareStatement(sql)) {
+            ps.setString(1, user.getUsername());
+            ResultSet rs = ps.executeQuery();
+            Deck deck = new Deck();
+            while (rs.next()) {
+                String cardName = rs.getString("Name");
+                int damage = rs.getInt("Damage");
+                Card card = new Card(cardName, damage);
+                deck.addCard(card);
+            }
+            user.setDeck(deck);
+        }
+    }
+
+    public void updateUserStats(User user) throws DataAccessException {
+        String sql = "UPDATE users SET Elo = ?, Wins = ?, Losses = ? WHERE Username = ?";
+        try (PreparedStatement ps = unitOfWork.prepareStatement(sql)) {
+            ps.setInt(1, user.getElo());
+            ps.setInt(2, user.getWins());
+            ps.setInt(3, user.getLosses());
+            ps.setString(4, user.getUsername());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException("Error updating user stats", e);
         }
     }
 

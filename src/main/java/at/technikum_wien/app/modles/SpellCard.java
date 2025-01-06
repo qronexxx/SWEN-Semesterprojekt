@@ -6,5 +6,11 @@ public class SpellCard extends Card{
     public SpellCard(String name, int damage){
         super(name, damage);
     }
+
+    public SpellCard(String name, int damage, Element element){
+        super(name, damage);
+    }
+
+
 }
 

@@ -50,7 +50,7 @@ public class UserController extends Controller{
     public Response getUserPerRepository(String Username){
         UnitOfWork unitOfWork = new UnitOfWork();
         try{
-            User userData = new UserRepository(unitOfWork).findUserbyUsername(Username);
+            User userData = new UserRepository(unitOfWork).findUserByUsername(Username);
             if(userData == null){
                 return new Response(
                         HttpStatus.NOT_FOUND,
@@ -112,7 +112,7 @@ public class UserController extends Controller{
             // request.getBody() => "{ \"id\": 4, \"city\": \"Graz\", ... }
             User user = this.getObjectMapper().readValue(request.getBody(), User.class);
 
-            if(userRepository.findUserbyUsername(user.getUsername()) != null){
+            if(userRepository.findUserByUsername(user.getUsername()) != null){
                 // Return 409 Conflict if user already exists
                 return new Response(
                         HttpStatus.CONFLICT,

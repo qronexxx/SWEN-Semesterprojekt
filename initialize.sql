@@ -3,7 +3,7 @@
 
 -- Verbinde dich mit der mtcg_db-Datenbank
 
---docker run -d --rm --name mtcg_db-e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -v pgdata:/var/lib/postgresql/data postgres
+--docker run -d --rm --name mtcg_db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -v pgdata:/var/lib/postgresql/data postgres
 --docker exec -it mtcg_db bash
 --psql -U postgres
 

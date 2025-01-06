@@ -21,7 +21,9 @@ public class SessionController extends Controller {
     public Response handleLogin(Request request) {
         try {
             User credentialsFromRequest = this.getObjectMapper().readValue(request.getBody(), User.class);
-            User sessionUser = userRepository.findUserbyUsername(credentialsFromRequest.getUsername());
+            User sessionUser = userRepository.findUserByUsername(credentialsFromRequest.getUsername());
+
+
 
             if(credentialsFromRequest.getUsername().equals(sessionUser.getUsername()) && credentialsFromRequest.getPassword().equals(sessionUser.getPassword())) {
                 // if user found
