@@ -1,5 +1,6 @@
 package at.technikum_wien.httpserver.services;
 
+import at.technikum_wien.app.business.AuthenticationFilter;
 import at.technikum_wien.app.controllers.TransactionsController;
 import at.technikum_wien.httpserver.http.ContentType;
 import at.technikum_wien.httpserver.http.HttpStatus;
@@ -17,8 +18,17 @@ public class TransactionsService implements Service {
 
     @Override
     public Response handleRequest(Request request){
-        if (request.getMethod() == Method.POST) {
-            return this.transactionsController.acquirePackage();
+        if (!AuthenticationFilter.isAuthenticated(request)) {
+            return new Response(
+                    HttpStatus.UNAUTHORIZED,
+                    ContentType.JSON,
+                    "{ \"message\": \"Authentication required\" }"
+            );
+        }
+
+        if (request.getMethod() == Method.POST &&
+                request.getPathParts().size() > 1) {
+            return this.transactionsController.acquirePackage(request);
         }
         return new Response(
                 HttpStatus.BAD_REQUEST,

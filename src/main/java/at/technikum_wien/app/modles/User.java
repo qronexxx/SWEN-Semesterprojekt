@@ -1,45 +1,69 @@
 package at.technikum_wien.app.modles;
-import at.technikum_wien.app.business.CardCollection;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-
 public class User {
-    private String username;
-    private String password;
-    private int coins;
-    private int elo;
-    private CardCollection stack;
-    private CardCollection deck;
-    private boolean isAdmin;
+    @JsonProperty("Username")
+    private String Username;
+
+    @JsonProperty("Password")
+    private String Password;
+
+    @JsonProperty("Name")
+    private String Name;
+    private int Coins;
+    private int Elo;
+
+    @JsonProperty("Bio")
+    private String Bio;
+
+    @JsonProperty("Image")
+    private String Image;
+    private Stack Stack;
+    private Deck deck;
+    private int losses;
+    private int wins;
 
     public User(){
-            this.deck = new CardCollection(4);
-            this.stack = new CardCollection();
-            setElo(100);
-            setCoins(50);
-            setAdmin(false);
+        this.deck = new Deck();
+        setElo(100);
+        setCoins(20);
+        setName("");
+        setBio("");
+        setImage("");
+    }
+
+    public User(String username, String bio, String image){
+        setUsername(username);
+        setBio(bio);
+        setImage(image);
     }
 
     public User(String username, String password){
         setUsername(username);
         setPassword(password);
-        setCoins(50);
+        setCoins(20);
         setElo(100);
-        this.deck = new CardCollection(4);
-        this.stack = new CardCollection();
-        setAdmin(false);
+        this.deck = new Deck();
+        setName("");
+        setBio("");
+        setImage("");
     }
 
-    public User(String username, String password, boolean isAdmin){
+    public User(String username, String password, String name, int coins, int elo, int wins, int losses, String bio, String image){
         setUsername(username);
         setPassword(password);
-        setCoins(50);
-        setElo(100);
-        setAdmin(isAdmin);
-        this.deck = new CardCollection(4);
-        this.stack = new CardCollection();
+        setName(name);
+        setCoins(coins);
+        setElo(elo);
+        setWins(wins);
+        setBio(bio);
+        setImage(image);
+        setLosses(losses);
+        setStack(new Stack());
+        setDeck(deck);
     }
 }
